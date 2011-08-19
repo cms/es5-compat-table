@@ -39,7 +39,7 @@
       
       "use strict";
       
-      var __global = this;
+      var __global = this, __eval = this.eval;
       
       function print(message) {
         var el = document.createElement('p');
@@ -74,6 +74,7 @@
         var error;
         try {
           eval('eval = 1;');
+          __global.eval = __eval;
         }
         catch (err) { error = err; }
         print('<span class="test"><code>eval = 1;<\/code> is a SyntaxError<\/span>' + colorResult(error instanceof SyntaxError));
@@ -92,6 +93,7 @@
         var error;
         try {
           eval('eval++;');
+          __global.eval = __eval;
         }
         catch (err) { error = err; }
         print('<span class="test"><code>eval++;<\/code> is a SyntaxError<\/span>' + colorResult(error instanceof SyntaxError));
