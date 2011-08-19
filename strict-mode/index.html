@@ -227,13 +227,21 @@
       })();
       
       (function(){
-        var error;
-        try {
-          if (Object.defineProperty) {
-            Object.defineProperty({ }, 'x', { writable: false }).x = 1;
+        var error, ieBug;
+        if (Object.defineProperty) {
+          try { // Detect IE8 buggy Object.defineProperty
+            Object.defineProperty({},'',{});
+          }
+          catch (err) {
+            ieBug = true;
+          }
+          if (!ieBug) {
+            try {
+                Object.defineProperty({ }, 'x', { writable: false }).x = 1;
+            }
+            catch (err) { error = err; }
           }
         }
-        catch (err) { error = err; }
         print('<span class="test"><code>Object.defineProperty({ }, "x", { writable: false }).x = 1<\/code> is a TypeError<\/span>' +
           colorResult(error instanceof TypeError));
       })();
